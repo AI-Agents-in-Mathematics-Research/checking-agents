@@ -1,42 +1,22 @@
 // Dev container for Thread 3. Used by "Reopen in Container" locally and by
 // GitHub Codespaces in the browser; docs/teaching-pack.md, Appendix A, has the
-// staff-side setup (distribution, allowances, costs) and the one manual step
-// the image below needs.
+// staff-side setup (distribution, allowances, costs).
 {
   "name": "Thread 3 — AI Agents for Mathematics Research",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {}
+  },
 
-  // A prebuilt image, not a base image plus a build. It carries elan, the
-  // pinned toolchain, Mathlib's pre-built oleans and Thread3.Common already
-  // built, so a codespace pulls a ready environment instead of spending the
-  // measured 7m15s assembling one. Built from .devcontainer/Dockerfile and
-  // published by .github/workflows/devcontainer-image.yml, in the staff
-  // repository; students only ever pull it.
-  //
-  // The package MUST BE PUBLIC. If it is private, a student's codespace
-  // cannot pull it and fails to create outright — there is no fallback path
-  // here to catch that, which is why the workflow fails loudly instead.
-  //
-  // `:latest`, not a digest, on purpose. A student's fork can be months older
-  // than the image; pinning a digest here would mean every pin bump had to be
-  // pushed to the student repository in lockstep to be picked up at all.
-  // post-create.sh is what reconciles an image with a checkout that has moved
-  // on from it.
-  "image": "ghcr.io/gustavdelius/thread3-devcontainer:latest",
-
-  // No "features" block, deliberately. Features are installed by building a
-  // derived image when the container is created — the very cost this image
-  // exists to remove. git is in the image instead; see the Dockerfile.
-
-  // There is no onCreateCommand any more: everything that was in
-  // .devcontainer/on-create.sh is the image now. Appendix A is explicit that
-  // moving that work into the image is the one circumstance in which taking it
-  // out of that script is correct rather than a mistake, and this is it.
-  //
-  // post-create.sh survived the move and is now the load-bearing half rather
-  // than the decorative one. It copies the prebuilt .lake in from outside the
-  // workspace — Codespaces mounts the clone over /workspaces, so the image
-  // cannot deliver it in place — and then lets lake reconcile it with this
-  // checkout. Read the comments at the top of it before changing anything.
+  // The split between these two was written for Codespaces prebuilds: only
+  // onCreateCommand was baked into a prebuilt image. There is no prebuild any
+  // more — GitHub Classroom, which carried the organisation prebuild benefit,
+  // was retired on 2026-08-28 — so today BOTH run at creation and every
+  // student pays for the whole of on-create.sh once. Keep them apart anyway:
+  // it is the seam along which a prebuilt image can be introduced later
+  // (Appendix A) without rewriting anything. Read the comments at the top of
+  // both scripts before moving anything between them.
+  "onCreateCommand": "bash .devcontainer/on-create.sh",
   "postCreateCommand": "bash .devcontainer/post-create.sh",
 
   // Two cores, deliberately. This used to be forced: enabling Codespaces
@@ -48,8 +28,7 @@
   // metered in core-hours, i.e. cores x hours: four cores would roughly halve
   // the one-off build wait for the same cost, then burn the allowance twice
   // as fast for every subsequent hour of editing, which is where nearly all
-  // of the time goes. With the prebuilt image there is barely a build left to
-  // halve, which makes the case for 2 stronger than it was.
+  // of the time goes.
   "hostRequirements": {
     "cpus": 2,
     "memory": "8gb",
@@ -59,8 +38,7 @@
   "remoteEnv": {
     // The lean4 extension does not run in a login shell and so never reads
     // .bashrc; it looks for `lake` on PATH and, not finding it, offers to
-    // install a toolchain of its own alongside ours. The Dockerfile sets the
-    // same PATH for the same reason.
+    // install a toolchain of its own alongside ours.
     "PATH": "/home/vscode/.elan/bin:${containerEnv:PATH}"
   },
 

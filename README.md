@@ -23,8 +23,8 @@ Tuesday — but do not keep anything in it you would not want read.
 
 **In your browser, with nothing installed.** On **your fork**, click the green
 **Code** button ▸ **Codespaces** ▸ **Create codespace on main**. The first
-launch installs Lean and downloads a pre-built Mathlib, so it takes a few
-minutes; later ones are quick. Wait for the terminal to say `Setup finished.`,
+launch downloads a ready-made environment with Lean and a pre-built Mathlib
+already in it, so it takes a few minutes; later ones are quick. Wait for the terminal to say `Setup finished.`,
 then open `Thread3/Week01.lean` and wait for the Infoview to appear on the
 right. Same VS Code, same Lean, same pinned Mathlib as everyone else. Two
 rules: it stops after 30 minutes idle (your files are kept), and you commit and

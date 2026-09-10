@@ -123,6 +123,19 @@ minute, then **Ctrl/Cmd+Shift+P** ▸ "Lean 4: Restart File".
 **Everything is underlined red, including `import`.** Mathlib is not built.
 Run `lake exe cache get` in the project root, then restart VS Code.
 
+**An `import` you added yourself is underlined red, but the rest of the file is
+fine.** In a codespace, Mathlib comes pre-built for the imports listed in
+`Thread3/Common.lean` — which is everything the worksheets need — rather than
+for all eight thousand of Mathlib's files. If you reach further into the
+library, fetch the rest once:
+
+```
+lake exe cache get
+```
+
+That takes a few minutes, once, and then any import works. If instead it starts
+building Mathlib from source, stop it and see the next entry.
+
 **It is building Mathlib from source (thousands of files scrolling past).**
 Stop it. `lake exe cache get` failed — usually a network problem or a mismatched
 Lean version. Check that `elan show` reports the version in `lean-toolchain`.

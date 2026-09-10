@@ -1,0 +1,49 @@
+// Dev container for Thread 3. Used by "Reopen in Container" locally and by
+// GitHub Codespaces in the browser; docs/teaching-pack.md, Appendix A, has the
+// staff-side setup (Classroom, prebuilds, costs).
+{
+  "name": "Thread 3 — AI Agents for Mathematics Research",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {}
+  },
+
+  // The split between these two matters: only onCreateCommand is baked into a
+  // Codespaces prebuild. Read the comments at the top of both scripts before
+  // moving anything between them.
+  "onCreateCommand": "bash .devcontainer/on-create.sh",
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+
+  // Two cores, deliberately. Enabling Codespaces through GitHub Classroom adds
+  // an organisation policy restricting machine types to 2 cores, and a
+  // codespace whose hostRequirements no permitted machine type can satisfy
+  // refuses to be created at all ("no valid machine types available"). Raising
+  // this means lifting that policy for the repository first. The initial build
+  // is the only part that wants more cores, and the prebuild has already done
+  // it.
+  "hostRequirements": {
+    "cpus": 2,
+    "memory": "8gb",
+    "storage": "32gb"
+  },
+
+  "remoteEnv": {
+    // The lean4 extension does not run in a login shell and so never reads
+    // .bashrc; it looks for `lake` on PATH and, not finding it, offers to
+    // install a toolchain of its own alongside ours.
+    "PATH": "/home/vscode/.elan/bin:${containerEnv:PATH}"
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": ["leanprover.lean4"],
+      "settings": {
+        "editor.rulers": [100],
+        "files.trimTrailingWhitespace": true,
+        // Students open the folder, not a file — the commonest setup mistake
+        // locally, and worth making impossible here.
+        "workbench.startupEditor": "readme"
+      }
+    }
+  }
+}

@@ -1,7 +1,6 @@
 ---
 title: "Thread 3 — Setting up Lean"
 subtitle: "AI Agents for Mathematics Research · setup and troubleshooting"
-date: "Department of Mathematics, University of York"
 ---
 
 # On a classroom machine

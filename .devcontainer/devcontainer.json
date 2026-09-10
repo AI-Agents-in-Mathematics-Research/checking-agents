@@ -1,6 +1,6 @@
 // Dev container for Thread 3. Used by "Reopen in Container" locally and by
 // GitHub Codespaces in the browser; docs/teaching-pack.md, Appendix A, has the
-// staff-side setup (Classroom, prebuilds, costs).
+// staff-side setup (distribution, allowances, costs).
 {
   "name": "Thread 3 — AI Agents for Mathematics Research",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
@@ -8,19 +8,27 @@
     "ghcr.io/devcontainers/features/git:1": {}
   },
 
-  // The split between these two matters: only onCreateCommand is baked into a
-  // Codespaces prebuild. Read the comments at the top of both scripts before
-  // moving anything between them.
+  // The split between these two was written for Codespaces prebuilds: only
+  // onCreateCommand was baked into a prebuilt image. There is no prebuild any
+  // more — GitHub Classroom, which carried the organisation prebuild benefit,
+  // was retired on 2026-08-28 — so today BOTH run at creation and every
+  // student pays for the whole of on-create.sh once. Keep them apart anyway:
+  // it is the seam along which a prebuilt image can be introduced later
+  // (Appendix A) without rewriting anything. Read the comments at the top of
+  // both scripts before moving anything between them.
   "onCreateCommand": "bash .devcontainer/on-create.sh",
   "postCreateCommand": "bash .devcontainer/post-create.sh",
 
-  // Two cores, deliberately. Enabling Codespaces through GitHub Classroom adds
-  // an organisation policy restricting machine types to 2 cores, and a
-  // codespace whose hostRequirements no permitted machine type can satisfy
-  // refuses to be created at all ("no valid machine types available"). Raising
-  // this means lifting that policy for the repository first. The initial build
-  // is the only part that wants more cores, and the prebuild has already done
-  // it.
+  // Two cores, deliberately. This used to be forced: enabling Codespaces
+  // through GitHub Classroom added an organisation policy capping machine
+  // types at 2 cores, and a codespace whose hostRequirements no permitted
+  // machine type can satisfy refuses to be created at all ("no valid machine
+  // types available"). That policy went with Classroom, so this is now a
+  // choice — and still the right one. Students pay from a personal allowance
+  // metered in core-hours, i.e. cores x hours: four cores would roughly halve
+  // the one-off build wait for the same cost, then burn the allowance twice
+  // as fast for every subsequent hour of editing, which is where nearly all
+  // of the time goes.
   "hostRequirements": {
     "cpus": 2,
     "memory": "8gb",

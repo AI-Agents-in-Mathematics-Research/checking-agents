@@ -15,6 +15,15 @@ declare -A OUT=(
   [teaching-pack]="Thread3_teaching_pack_weeks1-6.pdf"
 )
 
+# The dateline printed on each handout. Not stored as YAML front-matter `date:`
+# in the .md sources because that key is reserved by Jekyll (which also builds
+# these files, via docs/_config.yml) and gets parsed as a datetime, not text.
+declare -A DATE=(
+  [worksheets]="Department of Mathematics, University of York"
+  [setup]="Department of Mathematics, University of York"
+  [teaching-pack]="Department of Mathematics, University of York — internal"
+)
+
 for f in worksheets setup teaching-pack; do
   [ -f "$f.md" ] || { echo "skipping $f.md (not present)"; continue; }
   tmp=$(mktemp /tmp/$f.XXXX.md)
@@ -22,7 +31,7 @@ for f in worksheets setup teaching-pack; do
   toc="--toc --toc-depth=1"
   [ "$f" = "setup" ] && toc=""
   pandoc "$tmp" -o "pdf/${OUT[$f]}" --pdf-engine=wkhtmltopdf --css=style.css \
-    --standalone --metadata pagetitle="Thread 3" $toc \
+    --standalone --metadata pagetitle="Thread 3" --metadata date="${DATE[$f]}" $toc \
     -V margin-top=18mm -V margin-bottom=18mm -V margin-left=16mm -V margin-right=16mm
   rm -f "$tmp"
   echo "pdf/${OUT[$f]}"

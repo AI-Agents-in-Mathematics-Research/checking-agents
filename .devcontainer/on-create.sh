@@ -1,14 +1,21 @@
 #!/usr/bin/env bash
-# Runs ONCE, when the container is first created — and, crucially, at PREBUILD
-# time. That is the only reason this is a separate file from post-create.sh.
+# Runs ONCE, when the container is first created.
 #
-# GitHub Codespaces bakes `onCreateCommand` and `updateContentCommand` into the
-# prebuilt image, but re-runs `postCreateCommand` for every codespace created
-# from it. So everything slow, network-heavy, and identical for every student
-# belongs here: elan, the Mathlib cache, and the shared import surface. With
-# `lake exe cache get` in postCreateCommand instead, every student would sit
-# through the download at the start of every practical and prebuilds would buy
-# nothing.
+# This file was split out from post-create.sh for Codespaces prebuilds. GitHub
+# baked `onCreateCommand` and `updateContentCommand` into the prebuilt image
+# and re-ran `postCreateCommand` for every codespace made from it, so
+# everything slow, network-heavy and identical for every student belonged
+# here: elan, the Mathlib cache, and the shared import surface.
+#
+# THERE IS NO PREBUILD ANY MORE. GitHub Classroom, which carried the
+# organisation prebuild benefit, was retired on 2026-08-28; prebuilds now need
+# an organisation payment method and do not reach forks. Both scripts run at
+# creation and every student waits through all of this once.
+#
+# Keep the split regardless. It is the seam along which the slow work can be
+# moved into a prebuilt image published to GHCR, which is the supported way to
+# get the wait back down (docs/teaching-pack.md, Appendix A). Do not merge
+# these two files.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 

@@ -5,18 +5,40 @@ Department of Mathematics, University of York.
 
 ## Setting up
 
-**In your browser, with nothing installed.** Click the green **Code** button at
-the top of this page ▸ **Codespaces** ▸ **Create codespace on main**. Wait for
-the terminal to say `Setup finished.`, then open `Thread3/Week01.lean` and wait
-for the Infoview to appear on the right. Same VS Code, same Lean, same pinned
-Mathlib as everyone else. Two rules: it stops after 30 minutes idle (your files
-are kept), and you commit and push at the end of every session — a codespace is
-not a backup.
+### First, take your own copy
+
+You cannot push to this repository. Everything below happens in **your** copy,
+so make it before you do anything else.
+
+Click **Fork** at the top right of this page, then **Create fork**, leaving the
+name and the settings as they are. You now have
+`your-username/checking-agents`. Every instruction from here on means *your*
+fork, not this page.
+
+Your fork is public, as this repository is. Anyone can see your work in
+progress, and nobody is assessed on what a half-finished file looked like on a
+Tuesday — but do not keep anything in it you would not want read.
+
+### Then, one of these two
+
+**In your browser, with nothing installed.** On **your fork**, click the green
+**Code** button ▸ **Codespaces** ▸ **Create codespace on main**. The first
+launch installs Lean and downloads a pre-built Mathlib, so it takes a few
+minutes; later ones are quick. Wait for the terminal to say `Setup finished.`,
+then open `Thread3/Week01.lean` and wait for the Infoview to appear on the
+right. Same VS Code, same Lean, same pinned Mathlib as everyone else. Two
+rules: it stops after 30 minutes idle (your files are kept), and you commit and
+push at the end of every session — a codespace is not a backup.
+
+Codespaces is free on your own account up to a monthly allowance, and this
+thread needs roughly a third of it. Sign up for the **GitHub Student Developer
+Pack**, which raises that allowance by half again, and delete codespaces you
+have finished with — the storage is the part you are most likely to run out of.
 
 **On your own machine.**
 
 ```bash
-git clone <this repo> thread3
+git clone https://github.com/YOUR-USERNAME/checking-agents.git thread3
 cd thread3
 lake exe cache get      # downloads Mathlib pre-built — do not skip
 code .                  # open the FOLDER, not a single file
@@ -44,8 +66,26 @@ Each week's worksheet is in
 [`docs/pdf/Thread3_student_worksheets_weeks1-6.pdf`](docs/pdf/Thread3_student_worksheets_weeks1-6.pdf).
 Read the relevant week before the session.
 
-Run `git pull` each week: exercises are added and corrected as the term goes on,
-and solutions appear after each week's quiz.
+## Getting each week's updates
+
+Exercises are corrected and added as the term goes on, and each week's model
+solutions appear after that week's quiz. Those changes land in the **original**
+repository, not in your fork, so you have to bring them across. Once a week:
+
+1. On your fork's page on GitHub, click **Sync fork** ▸ **Update branch**.
+2. In your codespace or your local checkout, `git pull`.
+
+If you prefer the command line, do it once:
+
+```bash
+git remote add upstream https://github.com/AI-Agents-in-Mathematics-Research/checking-agents.git
+```
+
+and thereafter `git pull upstream main`.
+
+If git reports a conflict because you have edited a file that also changed
+upstream, stop and ask a demonstrator. Do not force anything: your work is on
+the losing side of most of the obvious commands.
 
 ## What counts as finished
 

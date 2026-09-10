@@ -1,7 +1,6 @@
 ---
 title: "Thread 3 — How to Check Their Work"
 subtitle: "Student worksheets, weeks 1–6 · AI Agents for Mathematics Research"
-date: "Department of Mathematics, University of York"
 ---
 
 # About this thread
